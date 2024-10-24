@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Alert } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import React, {useState} from "react";
+import {Container, Form, Button, Alert} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router";
 
 import "./style/register.style.css";
 
-import { registerUser } from "../../features/user/userSlice";
+import {registerUser} from "../../features/user/userSlice";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -19,11 +19,11 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
-  const { registrationError } = useSelector((state) => state.user);
+  const {registrationError} = useSelector((state) => state.user);
 
   const register = (event) => {
     event.preventDefault();
-    const { name, email, password, confirmPassword, policy } = formData;
+    const {name, email, password, confirmPassword, policy} = formData;
     const checkConfirmPassword = password === confirmPassword;
     if (!checkConfirmPassword) {
       setPasswordError("비밀번호 중복확인이 일치하지 않습니다.");
@@ -35,18 +35,18 @@ const RegisterPage = () => {
     }
     setPasswordError("");
     setPolicyError(false);
-    dispatch(registerUser({ name, email, password, navigate }));
+    dispatch(registerUser({name, email, password, navigate}));
   };
 
   const handleChange = (event) => {
     event.preventDefault();
-    let { id, value, type, checked } = event.target;
+    let {id, value, type, checked} = event.target;
     if (id === "confirmPassword" && passwordError) setPasswordError("");
     if (type === "checkbox") {
       if (policyError) setPolicyError(false);
-      setFormData((prevState) => ({ ...prevState, [id]: checked }));
+      setFormData((prevState) => ({...prevState, [id]: checked}));
     } else {
-      setFormData({ ...formData, [id]: value });
+      setFormData({...formData, [id]: value});
     }
   };
 
