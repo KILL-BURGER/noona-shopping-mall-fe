@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Container, Button } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Container, Button} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {useSearchParams, useNavigate} from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import SearchBox from "../../common/component/SearchBox";
 import NewItemDialog from "./component/NewItemDialog";
@@ -16,7 +16,7 @@ const AdminProductPage = () => {
   const navigate = useNavigate();
   const [query] = useSearchParams();
   const dispatch = useDispatch();
-  const { productList, totalPageNum } = useSelector((state) => state.product);
+  const {productList, totalPageNum} = useSelector((state) => state.product);
   const [showDialog, setShowDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
@@ -43,7 +43,7 @@ const AdminProductPage = () => {
   }, [searchQuery]);
 
   const deleteItem = (id) => {
-    //아이템 삭제하가ㅣ
+    //아이템 삭제하기
   };
 
   const openEditForm = (product) => {
@@ -53,10 +53,12 @@ const AdminProductPage = () => {
 
   const handleClickNewItem = () => {
     //new 모드로 설정하고
+    setMode("new");
     // 다이얼로그 열어주기
+    setShowDialog(true);
   };
 
-  const handlePageClick = ({ selected }) => {
+  const handlePageClick = ({selected}) => {
     //  쿼리에 페이지값 바꿔주기
   };
 

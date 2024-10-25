@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Form, Modal, Button, Row, Col, Alert } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import React, {useState, useEffect} from "react";
+import {Form, Modal, Button, Row, Col, Alert} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
-import { CATEGORY, STATUS, SIZE } from "../../../constants/product.constants";
+import {CATEGORY, STATUS, SIZE} from "../../../constants/product.constants";
 import "../style/adminProduct.style.css";
 import {
   clearError,
@@ -21,12 +21,12 @@ const InitialFormData = {
   price: 0,
 };
 
-const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
-  const { error, success, selectedProduct } = useSelector(
+const NewItemDialog = ({mode, showDialog, setShowDialog}) => {
+  const {error, success, selectedProduct} = useSelector(
     (state) => state.product
   );
   const [formData, setFormData] = useState(
-    mode === "new" ? { ...InitialFormData } : selectedProduct
+    mode === "new" ? {...InitialFormData} : selectedProduct
   );
   const [stock, setStock] = useState([]);
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
         ]);
         setStock(sizeArray);
       } else {
-        setFormData({ ...InitialFormData });
+        setFormData({...InitialFormData});
         setStock([]);
       }
     }
@@ -64,36 +64,55 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     //재고를 입력했는지 확인, 아니면 에러
+    if (stock.length === 0) {
+      return setStockError(true);
+    }
     // 재고를 배열에서 객체로 바꿔주기
+    const totalStock = stock.reduce((total, item) => {
+      return {...total, [item[0]]:parseInt(item[1])};
+    }, {});
     // [['M',2]] 에서 {M:2}로
     if (mode === "new") {
       //새 상품 만들기
+      dispatch(createProduct({...formData, stock: totalStock}));
     } else {
       // 상품 수정하기
     }
   };
 
   const handleChange = (event) => {
-    //form에 데이터 넣어주기
+    //form 에 데이터 넣어주기
+    const {id, value} = event.target;
+    setFormData({...formData, [id]: value});
   };
 
   const addStock = () => {
     //재고타입 추가시 배열에 새 배열 추가
+    setStock([...stock, []]);
   };
 
   const deleteStock = (idx) => {
     //재고 삭제하기
+    const newStock = stock.filter((item, index) => index !== idx);
+    setStock(newStock);
   };
 
   const handleSizeChange = (value, index) => {
     //  재고 사이즈 변환하기
+    const newStock = [...stock];
+    newStock[index][0] = value;
+    setStock(newStock);
   };
 
   const handleStockChange = (value, index) => {
     //재고 수량 변환하기
+    const newStock = [...stock];
+    newStock[index][1] = value;
+    setStock(newStock);
   };
 
   const onHandleCategory = (event) => {
+    // 카테고리가 이미 추가되어 있으면 제거
     if (formData.category.includes(event.target.value)) {
       const newCategory = formData.category.filter(
         (item) => item !== event.target.value
@@ -112,6 +131,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const uploadImage = (url) => {
     //이미지 업로드
+    setFormData({...formData, image: url});
   };
 
   return (
@@ -229,7 +249,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
 
         <Form.Group className="mb-3" controlId="Image" required>
           <Form.Label>Image</Form.Label>
-          <CloudinaryUploadWidget uploadImage={uploadImage} />
+          <CloudinaryUploadWidget uploadImage={uploadImage}/>
 
           <img
             id="uploadedimage"

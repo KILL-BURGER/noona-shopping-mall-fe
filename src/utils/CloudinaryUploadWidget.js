@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import React, {Component} from "react";
+import {Button} from "react-bootstrap";
 import "../App.css";
 import "../common/style/common.style.css";
 
