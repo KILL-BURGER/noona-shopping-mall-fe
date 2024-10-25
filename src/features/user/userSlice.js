@@ -37,11 +37,24 @@ export const loginWithEmail = createAsyncThunk(
   ) => {
     try {
       const response = await api.post('/auth/login', {email, password});
-      // 성공
-      // 로그인 페이지로~
+      // 성공 - 세션 스토리지에 토큰 저장
+      sessionStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error) {
       // 실패 -> 실패시 생긴 에러 저장
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// 토큰 로그인
+export const loginWithToken = createAsyncThunk(
+  "user/loginWithToken",
+  async (_, {rejectWithValue}) => {
+    try {
+      const response = await api.get('/user/me');
+      return response.data;
+    } catch (error) {
       return rejectWithValue(error.error);
     }
   }
@@ -54,14 +67,10 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
-export const loginWithToken = createAsyncThunk(
-  "user/loginWithToken",
-  async (_, {rejectWithValue}) => {
-  }
-);
-
 // 로그아웃
 export const logout = () => (dispatch) => {
+  sessionStorage.removeItem('token');
+  dispatch(logoutAction());
 };
 
 const userSlice = createSlice({
@@ -78,6 +87,9 @@ const userSlice = createSlice({
       state.loginError = null;
       state.registrationError = null;
     },
+    logoutAction: (state) => {
+      state.user = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -102,8 +114,11 @@ const userSlice = createSlice({
       .addCase(loginWithEmail.rejected, (state, action) => {
         state.loading = false;
         state.loginError = action.payload;
+      })
+      .addCase(loginWithToken.fulfilled, (state, action) => {
+        state.user = action.payload.user;
       });
   },
 });
-export const {clearErrors} = userSlice.actions;
+export const {clearErrors, logoutAction} = userSlice.actions;
 export default userSlice.reducer;
