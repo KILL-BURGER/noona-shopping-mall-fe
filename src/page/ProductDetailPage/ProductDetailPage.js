@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { ColorRing } from "react-loader-spinner";
-import { currencyFormat } from "../../utils/number";
+import React, {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import {Container, Row, Col, Button, Dropdown} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {ColorRing} from "react-loader-spinner";
+import {currencyFormat} from "../../utils/number";
 import "./style/productDetail.style.css";
-import { getProductDetail } from "../../features/product/productSlice";
-import { addToCart } from "../../features/cart/cartSlice";
+import {getProductDetail} from "../../features/product/productSlice";
+import {addToCart} from "../../features/cart/cartSlice";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
-  const { selectedProduct, loading } = useSelector((state) => state.product);
+  const {selectedProduct, loading} = useSelector((state) => state.product);
   const [size, setSize] = useState("");
-  const { id } = useParams();
+  const {id} = useParams();
   const [sizeError, setSizeError] = useState(false);
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
@@ -21,9 +21,22 @@ const ProductDetail = () => {
     //사이즈를 아직 선택안했다면 에러
     // 아직 로그인을 안한유저라면 로그인페이지로
     // 카트에 아이템 추가하기
+    if (!size) {
+      setSizeError(true);
+      return;
+    }
+
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    dispatch(addToCart({product: selectedProduct, size, quantity: 1}));
   };
   const selectSize = (value) => {
     // 사이즈 추가하기
+    setSize(value);
+    setSizeError(false);
   };
 
   useEffect(() => {
@@ -46,7 +59,7 @@ const ProductDetail = () => {
     <Container className="product-detail-card">
       <Row>
         <Col sm={6}>
-          <img src={selectedProduct.image} className="w-100" alt="image" />
+          <img src={selectedProduct.image} className="w-100" alt="image"/>
         </Col>
         <Col className="product-info-area" sm={6}>
           <div className="product-info">{selectedProduct.name}</div>
