@@ -58,7 +58,7 @@ export const deleteCartItem = createAsyncThunk(
       dispatch(getCartList());
       return response.data.cartItemQty;
     } catch (error) {
-      dispatch(showToastMessage({ message: error.message, status: "error" }));
+      dispatch(showToastMessage({message: error.message, status: "error"}));
       return rejectWithValue(error.error);
     }
   }
@@ -81,7 +81,7 @@ export const updateQty = createAsyncThunk(
 
 export const getCartQty = createAsyncThunk(
   "cart/getCartQty",
-  async (_, {rejectWithValue, dispatch}) =>{
+  async (_, {rejectWithValue, dispatch}) => {
     try {
       const response = await api.get('/cart/qty');
       if (!response.status === 200) {
@@ -131,6 +131,7 @@ const cartSlice = createSlice({
       }).addCase(deleteCartItem.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
+      state.cartItemCount = action.payload;
     }).addCase(deleteCartItem.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
