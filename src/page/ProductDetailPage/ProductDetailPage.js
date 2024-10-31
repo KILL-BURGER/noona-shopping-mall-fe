@@ -31,12 +31,12 @@ const ProductDetail = () => {
       return;
     }
 
-    dispatch(addToCart({product: selectedProduct, size, quantity: 1}));
+    dispatch(addToCart({id, size}));
   };
   const selectSize = (value) => {
     // 사이즈 추가하기
     setSize(value);
-    setSizeError(false);
+    if (sizeError) setSizeError(false);
   };
 
   useEffect(() => {
