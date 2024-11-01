@@ -8,7 +8,6 @@ import {ColorRing} from "react-loader-spinner";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
-  // const productList = useSelector((state) => state.product.productList);
   const {loading, productList} = useSelector((state) => state.product);
   const [query] = useSearchParams();
   const name = query.get("name");
