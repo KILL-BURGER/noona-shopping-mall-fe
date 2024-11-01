@@ -1,14 +1,15 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import ProductCard from "./components/ProductCard";
-import { Row, Col, Container } from "react-bootstrap";
-import { useSearchParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getProductList } from "../../features/product/productSlice";
+import {Row, Col, Container, Spinner} from "react-bootstrap";
+import {useSearchParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getProductList} from "../../features/product/productSlice";
+import {ColorRing} from "react-loader-spinner";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
-
-  const productList = useSelector((state) => state.product.productList);
+  // const productList = useSelector((state) => state.product.productList);
+  const {loading, productList} = useSelector((state) => state.product);
   const [query] = useSearchParams();
   const name = query.get("name");
   useEffect(() => {
@@ -19,13 +20,28 @@ const LandingPage = () => {
     );
   }, [query]);
 
+  // 로딩 스피너 추가.
+  if (loading) {
+    return (
+      <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="blocks-loading"
+        wrapperStyle={{}}
+        wrapperClass="blocks-wrapper"
+        colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+      />
+    );
+  }
+
   return (
     <Container>
       <Row>
         {productList.length > 0 ? (
           productList.map((item) => (
             <Col md={3} sm={12} key={item._id}>
-              <ProductCard item={item} />
+              <ProductCard item={item}/>
             </Col>
           ))
         ) : (

@@ -9,7 +9,6 @@ export const getProductList = createAsyncThunk(
   async (query, {rejectWithValue}) => {
     try {
       const response = await api.get('/product', {params: {...query}});
-      console.log('rrrrr', response);
       if (response.status !== 200) {
         throw new Error(response.error);
       }
@@ -59,7 +58,6 @@ export const editProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (id, {dispatch, rejectWithValue}) => {
-    console.log('id===>', id);
     try {
       const response = await api.delete(`/product/${id.id}`);
       if (response.status !== 200) {
@@ -124,9 +122,11 @@ const productSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.success = false;
-    }).addCase(getProductList.pending, (state, action) => {
-      state.loading = true;
-    }).addCase(getProductList.fulfilled, (state, action) => {
+    })
+
+      .addCase(getProductList.pending, (state, action) => {
+        state.loading = true;
+      }).addCase(getProductList.fulfilled, (state, action) => {
       state.loading = false;
       state.productList = action.payload.data;
       state.error = '';
@@ -134,7 +134,9 @@ const productSlice = createSlice({
     }).addCase(getProductList.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
-    }).addCase(editProduct.pending, (state, action) => {
+    })
+
+      .addCase(editProduct.pending, (state, action) => {
       state.loading = true;
     }).addCase(editProduct.fulfilled, (state, action) => {
       state.loading = false;
