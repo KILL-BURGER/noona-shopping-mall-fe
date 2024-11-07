@@ -37,6 +37,7 @@ export const editProduct = createAsyncThunk(
   async ({id, ...formData}, {dispatch, rejectWithValue}) => {
     try {
       const response = await api.put(`/product/${id}`, formData);
+      dispatch(showToastMessage({message: '상품 수정 완료', status: 'success'}));
       dispatch(getProductList({page: 1}));
       return response.data.data;
     } catch (error) {
@@ -122,8 +123,9 @@ const productSlice = createSlice({
     })
 
       .addCase(editProduct.pending, (state, action) => {
-      state.loading = true;
-    }).addCase(editProduct.fulfilled, (state, action) => {
+        state.loading = true;
+      }).addCase(editProduct.fulfilled, (state, action) => {
+      console.log('상품 수정');
       state.loading = false;
       state.error = '';
       state.success = true;
@@ -131,9 +133,11 @@ const productSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.success = false;
-    }).addCase(getProductDetail.pending, (state, action) => {
-      state.loading = true;
-    }).addCase(getProductDetail.fulfilled, (state, action) => {
+    })
+
+      .addCase(getProductDetail.pending, (state, action) => {
+        state.loading = true;
+      }).addCase(getProductDetail.fulfilled, (state, action) => {
       state.loading = false;
       state.error = '';
       state.success = true;
@@ -146,6 +150,10 @@ const productSlice = createSlice({
   },
 });
 
-export const {setSelectedProduct, setFilteredList, clearError} =
+export const {
+  setSelectedProduct,
+  setFilteredList,
+  clearError
+} =
   productSlice.actions;
 export default productSlice.reducer;
