@@ -21,6 +21,9 @@ const AdminOrderPage = () => {
     page: query.get("page") || 1,
     ordernum: query.get("ordernum") || "",
   });
+
+  console.log('orderList', orderList);
+  console.log(useSelector((state) => state.order));
   const [open, setOpen] = useState(false);
 
   const tableHeader = [
@@ -54,6 +57,8 @@ const AdminOrderPage = () => {
   };
 
   const handlePageClick = ({ selected }) => {
+    console.log('handlePageClick');
+    console.log('selected ==> ', selected);
     setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
 
