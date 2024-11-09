@@ -16,7 +16,6 @@ import {initialCart} from "../../features/cart/cartSlice";
 const Navbar = ({user}) => {
   const dispatch = useDispatch();
   const {cartItemCount} = useSelector((state) => state.cart);
-  const {wishList} = useSelector((state) => state.product); // wishListCount 가져오기
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
@@ -43,7 +42,6 @@ const Navbar = ({user}) => {
   const handleLogout = () => {
     dispatch(logout());
     dispatch(initialCart());
-    // dispatch(initialProduct());
   };
   return (
     <div>
@@ -67,17 +65,17 @@ const Navbar = ({user}) => {
           </div>
         </div>
       )}
-      <div className="side-menu" style={{width: width}}>
-        <button className="closebtn" onClick={() => setWidth(0)}>
-          &times;
-        </button>
+      {/*<div className="side-menu" style={{width: width}}>*/}
+      {/*  <button className="closebtn" onClick={() => setWidth(0)}>*/}
+      {/*    &times;*/}
+      {/*  </button>*/}
 
-        <div className="side-menu-list" id="menu-list">
-          {menuList.map((menu, index) => (
-            <button key={index}>{menu}</button>
-          ))}
-        </div>
-      </div>
+      {/*  <div className="side-menu-list" id="menu-list">*/}
+      {/*    {menuList.map((menu, index) => (*/}
+      {/*      <button key={index}>{menu}</button>*/}
+      {/*    ))}*/}
+      {/*  </div>*/}
+      {/*</div>*/}
       {user && user.level === "admin" && (
         <Link to="/admin/product?page=1" className="link-area">
           Admin page
@@ -137,27 +135,32 @@ const Navbar = ({user}) => {
 
       <div className="nav-logo">
         <Link to="/">
-          <img width={100} src="/image/hm-logo.png" alt="hm-logo.png"/>
+          {/*<img width={100} src="/image/hm-logo.png" alt="hm-logo.png"/>*/}
+          <img width={300} src="/image/pngwing.com.png"
+               alt="carhartt-logo.png"/>
         </Link>
       </div>
       <div className="nav-menu-area">
-        <ul className="menu">
-          {menuList.map((menu, index) => (
-            <li key={index}>
-              <a href="#">{menu}</a>
-            </li>
-          ))}
-        </ul>
-        {!isMobile && ( // admin페이지에서 같은 search-box스타일을 쓰고있음 그래서 여기서 서치박스 안보이는것 처리를 해줌
-          <div className="search-box landing-search-box ">
-            <FontAwesomeIcon icon={faSearch}/>
-            <input
-              type="text"
-              placeholder="제품검색"
-              onKeyPress={onCheckEnter}
-            />
-          </div>
-        )}
+        {/*<ul className="menu">*/}
+        {/*  {menuList.map((menu, index) => (*/}
+        {/*    <li key={index}>*/}
+        {/*      <a href="#">{menu}</a>*/}
+        {/*    </li>*/}
+        {/*  ))}*/}
+        {/*</ul>*/}
+        <div>
+          {!isMobile && ( // admin페이지에서 같은 search-box스타일을 쓰고있음 그래서 여기서 서치박스 안보이는것 처리를 해줌
+            <div className="search-box landing-search-box ">
+              <FontAwesomeIcon icon={faSearch}/>
+              <input
+                type="text"
+                placeholder="제품검색"
+                onKeyPress={onCheckEnter}
+              />
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );

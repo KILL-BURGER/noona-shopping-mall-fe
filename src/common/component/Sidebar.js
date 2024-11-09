@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Offcanvas, Navbar, Container } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {Offcanvas, Navbar, Container} from "react-bootstrap";
+import {Link, useNavigate} from "react-router-dom";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -15,7 +15,10 @@ const Sidebar = () => {
     return (
       <div>
         <Link to="/">
-          <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
+          {/*<img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />*/}
+          <img width={220} src="/image/pngwing.com.png"
+               style={{marginBottom: '20px'}}
+               alt="carhartt-logo.png"/>
         </Link>
         <div className="sidebar-item">Admin Account</div>
         <ul className="sidebar-area">
@@ -41,7 +44,7 @@ const Sidebar = () => {
 
       <Navbar bg="light" expand={false} className="mobile-sidebar-toggle">
         <Container fluid>
-          <img width={80} src="/image/hm-logo.png" alt="hm-logo.png" />
+          <img width={80} src="/image/hm-logo.png" alt="hm-logo.png"/>
           <Navbar.Brand href="#"></Navbar.Brand>
           <Navbar.Toggle
             aria-controls={`offcanvasNavbar-expand`}

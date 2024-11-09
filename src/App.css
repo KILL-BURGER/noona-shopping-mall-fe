@@ -43,9 +43,9 @@ body{
 }
 
 .landing-search-box{
-  right: 20px;
-  position: absolute;
-
+  /*right: 20px;*/
+  /*position: absolute;*/
+  margin: 50px;
 }
 .sidebar{
   max-width: 500px;
@@ -206,7 +206,7 @@ body{
 }
 .sidebar-item:hover{
   color:white;
-  background-color: red;
+  background-color: black;
   font-weight: bold;
 }
 .sidebar-area{
