@@ -17,6 +17,10 @@ const Navbar = ({user}) => {
   const dispatch = useDispatch();
   const {cartItemCount} = useSelector((state) => state.cart);
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
+  const isLocate = window.location.pathname !== '/login'
+    && window.location.pathname !== '/cart'
+    && window.location.pathname !== '/account/purchase'
+    && window.location.pathname !== '/wish';
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
     "여성",
@@ -149,7 +153,7 @@ const Navbar = ({user}) => {
         {/*  ))}*/}
         {/*</ul>*/}
         <div>
-          {!isMobile && ( // admin페이지에서 같은 search-box스타일을 쓰고있음 그래서 여기서 서치박스 안보이는것 처리를 해줌
+          {!isMobile && isLocate && ( // admin페이지에서 같은 search-box스타일을 쓰고있음 그래서 여기서 서치박스 안보이는것 처리를 해줌
             <div className="search-box landing-search-box ">
               <FontAwesomeIcon icon={faSearch}/>
               <input
