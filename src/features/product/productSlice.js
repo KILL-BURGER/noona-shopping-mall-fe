@@ -9,7 +9,6 @@ export const getProductList = createAsyncThunk(
   async (query, {rejectWithValue}) => {
     try {
       const response = await api.get('/product', {params: {...query}});
-      console.log('rrrr => ', response);
       return response.data;
     } catch (error) {
       rejectWithValue(error.error);
@@ -62,6 +61,21 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+// 위시리스트 삭제
+export const deleteWishProduct = createAsyncThunk(
+  "products/deleteWishProduct",
+  async (id, {dispatch, rejectWithValue}) => {
+    try {
+      const response = await api.delete(`/wish/${id.id}`);
+      dispatch(showToastMessage({message: '삭제 완료', status: 'success'}));
+      dispatch(getWishList({}));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
 // 상품 디테일 페이지
 export const getProductDetail = createAsyncThunk(
   "products/getProductDetail",
@@ -71,6 +85,49 @@ export const getProductDetail = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.error);
+    }
+  }
+);
+
+// 관심상품 등록
+export const addToWishList = createAsyncThunk(
+  "products/addWishList",
+  async (id, {dispatch, rejectWithValue}) => {
+    try {
+      const productId = id.id;
+      let data = {};
+      data.productId = productId;
+      const response = await api.post(`/wish`, data);
+      dispatch(showToastMessage({message: '관심상품 등록 완료', status: 'success'}));
+      return response.data.data;
+    } catch (error) {
+      dispatch(showToastMessage({message: '이미 등록된 상품입니다.', status: 'error'}));
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// 관심상품 페이지 조회
+export const getWishList = createAsyncThunk(
+  "products/getWishList",
+  async ({dispatch, rejectWithValue}) => {
+    try {
+      const response = await api.get('/wish');
+      return response.data;
+    } catch (error) {
+      rejectWithValue(error.error);
+    }
+  }
+);
+
+// 관심상품 페이지 삭제
+export const deleteWishList = createAsyncThunk(
+  "products/deleteWishList",
+  async ({dispatch, rejectWithValue}) => {
+    try {
+
+    } catch (error) {
+
     }
   }
 );
@@ -85,6 +142,8 @@ const productSlice = createSlice({
     error: "",
     totalPageNum: 1,
     success: false,
+    wishList: [],
+    wishListCount: 0,
   },
   reducers: {
     setSelectedProduct: (state, action) => {
@@ -126,7 +185,6 @@ const productSlice = createSlice({
       .addCase(editProduct.pending, (state, action) => {
         state.loading = true;
       }).addCase(editProduct.fulfilled, (state, action) => {
-      console.log('상품 수정');
       state.loading = false;
       state.error = '';
       state.success = true;
@@ -144,6 +202,33 @@ const productSlice = createSlice({
       state.success = true;
       state.selectedProduct = action.payload; // 데이터 저장 꼭 해주기..! 빼먹지 말자.
     }).addCase(getProductDetail.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.success = false;
+    })
+
+      .addCase(addToWishList.pending, (state, action) => {
+        state.loading = true;
+      }).addCase(addToWishList.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = '';
+      state.success = true;
+      state.wishListCount = action.payload;
+    }).addCase(addToWishList.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+      state.success = false;
+    })
+
+      .addCase(getWishList.pending, (state, action) => {
+        state.loading = true;
+      }).addCase(getWishList.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = '';
+      state.success = true;
+      console.log('action ==> ', action);
+      state.wishList = action.payload.data;
+    }).addCase(getWishList.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
       state.success = false;

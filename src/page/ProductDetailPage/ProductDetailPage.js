@@ -7,6 +7,7 @@ import {currencyFormat} from "../../utils/number";
 import "./style/productDetail.style.css";
 import {getProductDetail} from "../../features/product/productSlice";
 import {addToCart} from "../../features/cart/cartSlice";
+import {addToWishList} from "../../features/product/productSlice";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();
@@ -18,9 +19,6 @@ const ProductDetail = () => {
   const navigate = useNavigate();
 
   const addItemToCart = () => {
-    //사이즈를 아직 선택안했다면 에러
-    // 아직 로그인을 안한유저라면 로그인페이지로
-    // 카트에 아이템 추가하기
     if (!size) {
       setSizeError(true);
       return;
@@ -37,6 +35,13 @@ const ProductDetail = () => {
     // 사이즈 추가하기
     setSize(value);
     if (sizeError) setSizeError(false);
+  };
+  const addWishList = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    dispatch(addToWishList({id}));
   };
 
   useEffect(() => {
@@ -103,6 +108,9 @@ const ProductDetail = () => {
           </div>
           <Button variant="dark" className="add-button" onClick={addItemToCart}>
             추가
+          </Button>
+          <Button variant="dark" className="add-button" onClick={addWishList}>
+            관심상품 추가
           </Button>
         </Col>
       </Row>

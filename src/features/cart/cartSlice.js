@@ -42,7 +42,6 @@ export const getCartList = createAsyncThunk(
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
   async (id, {rejectWithValue, dispatch}) => {
-    console.log('삭제 아이템 id ==> ', id);
     try {
       const response = await api.delete(`/cart/${id}`);
       dispatch(getCartList());

@@ -23,8 +23,6 @@ const AdminProductPage = () => {
     name: query.get("name") || "",
   }); //검색 조건들을 저장하는 객체
 
-  console.log(showDialog);
-
   const [mode, setMode] = useState("new");
 
   const tableHeader = [

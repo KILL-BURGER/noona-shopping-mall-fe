@@ -22,8 +22,6 @@ const AdminOrderPage = () => {
     ordernum: query.get("ordernum") || "",
   });
 
-  console.log('orderList', orderList);
-  console.log(useSelector((state) => state.order));
   const [open, setOpen] = useState(false);
 
   const tableHeader = [
@@ -57,8 +55,6 @@ const AdminOrderPage = () => {
   };
 
   const handlePageClick = ({ selected }) => {
-    console.log('handlePageClick');
-    console.log('selected ==> ', selected);
     setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
 
@@ -84,12 +80,12 @@ const AdminOrderPage = () => {
           openEditForm={openEditForm}
         />
         <ReactPaginate
-          nextLabel="next >"
+          nextLabel=">"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={totalPageNum}
           forcePage={searchQuery.page - 1}
-          previousLabel="< previous"
+          previousLabel="<"
           renderOnZeroPageCount={null}
           pageClassName="page-item"
           pageLinkClassName="page-link"
