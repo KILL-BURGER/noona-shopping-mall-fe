@@ -20,7 +20,8 @@ const Navbar = ({user}) => {
   const isLocate = window.location.pathname !== '/login'
     && window.location.pathname !== '/cart'
     && window.location.pathname !== '/account/purchase'
-    && window.location.pathname !== '/wish';
+    && window.location.pathname !== '/wish'
+    && window.location.pathname !== '/payment';
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
     "여성",
