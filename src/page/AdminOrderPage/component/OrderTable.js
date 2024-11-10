@@ -4,6 +4,7 @@ import { badgeBg } from "../../../constants/order.constants";
 import { currencyFormat } from "../../../utils/number";
 
 const OrderTable = ({ header, data, openEditForm }) => {
+  console.log('data ==> ', data);
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
@@ -24,7 +25,7 @@ const OrderTable = ({ header, data, openEditForm }) => {
                 <th>{item.userId.email}</th>
                 {item.items.length > 0 ? (
                   <th>
-                    {item.items[0].productId.name}
+                    {item.items[0].productId?.name || "Product name unavailable"}
                     {item.items.length > 1 && `외 ${item.items.length - 1}개`}
                   </th>
                 ) : (
