@@ -22,7 +22,8 @@ const Navbar = ({user}) => {
     && window.location.pathname !== '/account/purchase'
     && window.location.pathname !== '/wish'
     && window.location.pathname !== '/payment'
-    && window.location.pathname !== '/payment/success';
+    && window.location.pathname !== '/payment/success'
+    && !window.location.pathname.startsWith('/product');
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
     "여성",
